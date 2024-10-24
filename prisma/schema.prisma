@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // PostgreSQL connection string
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  roleId        Int
+  role         Role @relation(fields: [roleId], references: [id])
+  tokens        Token[]
+  profile       Profile?
+  PasswordReset PasswordReset[]
+
+  @@map("users")
+}
+
+model Role {
+  id       Int        @id @default(autoincrement())
+  roleName String     @unique
+  users    User[]
+
+  @@map("roles")
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String
+  expiresAt DateTime
+  userId    Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tokens")
+}
+
+model PasswordReset {
+  id         Int      @id @default(autoincrement())
+  resetToken String
+  expiresAt  DateTime
+  userId     Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_resets")
+}
+
+model Profile {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @unique
+  firstName String?
+  lastName  String?
+  bio       String?
+  public    Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
