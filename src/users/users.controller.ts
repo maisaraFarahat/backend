@@ -50,7 +50,7 @@ export class UsersController {
     @Roles('Admin')
     @Patch('editRole/:id')
     updateRole(@Param('id') id:string  ,@Body() updateUserDto: UpdateUserDto) {
-      console.log(updateUserDto);
+     
       return this.userService.update(+id, updateUserDto);
     }
 
