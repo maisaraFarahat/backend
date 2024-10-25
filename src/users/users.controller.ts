@@ -25,6 +25,17 @@ export class UsersController {
     }
 
 
+    @Roles('Admin','Viewer','User')
+    @Patch('changePassword')
+    changePassword(@Headers('authorization') token:string  ,@Body() updateUserDto: UpdateUserDto) {
+       const actualToken = token.split(' ')[1];
+      const user = this.jwtService.verify(actualToken, {secret: process.env.JWT_SECRET});
+      if (updateUserDto.roleName){
+        throw new BadRequestException('Role is not allowed to be updated');
+      }
+      return this.userService.update(user.id, updateUserDto);
+    }
+
     @Roles('Admin','User')
     @Patch('editProfile')
     update(@Headers('authorization') token:string  ,@Body() updateUserDto: UpdateUserDto) {

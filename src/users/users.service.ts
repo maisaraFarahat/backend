@@ -72,10 +72,16 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     let { roleName, ...resultDto } = updateUserDto;
-    if (updateUserDto.password) {
-      resultDto.password = await bcrypt.hash(updateUserDto.password, process.env.SALT_ROUNDS);
-    }
     let finalDto = {}
+    if (updateUserDto.password) {
+      resultDto.password = await bcrypt.hash(updateUserDto.password, +process.env.ENCRYPTION_ROUNDS);
+    }else{
+      const user = this.databaseService.user.findUnique({
+        where: { id }
+      })
+      resultDto.password = (await user).password
+    }
+    
     if (updateUserDto.roleName) {
       const role = this.databaseService.role.findUnique({
         where: { roleName: updateUserDto.roleName }
@@ -84,8 +90,6 @@ export class UsersService {
     } else {
       finalDto = { ...resultDto }
     }
-
-
     return this.databaseService.user.update({
       where:
         { id, },

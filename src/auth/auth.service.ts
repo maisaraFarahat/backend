@@ -136,12 +136,16 @@ export class AuthService {
     *
     * @param {string} email - The email of the user trying to sign in.
     * @param {string} password - The password provided by the user for authentication.
-    * @returns {Promise<{ access_token: string, first_time: boolean }>} - Returns a JWT token and a flag indicating whether this is the user's first time signing in.
+    * @returns {Promise<{ access_token: string, first_time: boolean, role:string }>} - Returns a JWT token, a flag indicating whether this is the user's first time signing in and a DTO of the user including their role.
     * @throws {UnauthorizedException} - Throws an error if the email is not found or the password is invalid.
     */
     async signIn(email: string, password: string) {
         // Step 1: Find the user by email
         const user = await this.usersService.findByEmail(email);
+        if(!user) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+        
         // Step 2: Validate password
         const flag = (user.createdAt.getTime() === user.updatedAt.getTime())
         // check if first sign in ( password not updated)
@@ -159,10 +163,11 @@ export class AuthService {
         // Step 3: Generate JWT token
         const payload = { id: user.id, email: user.email, role: user.role.roleName };  // You can add roles to the payload if needed
         const token = this.jwtService.sign(payload);
-
+        
         return {
             access_token: token,
             first_time: flag, // You can add a flag to indicate if the user is a first time user
+            userDto:{role: user.role.roleName,},
         };
     }
 
