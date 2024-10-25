@@ -36,42 +36,34 @@ name: Deploy to GCP App Engine
 on:
   push:
     branches:
-      
-master  
+      - master  
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      
-      
-name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      
-name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'  # Adjust the Node.js version if necessary
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'  # Adjust the Node.js version if necessary
 
-      
-name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-      
-name: Build the app
-      run: npm run build
+      - name: Build the app
+        run: npm run build
 
-      
-name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v0
-      with:
-        credentials_json: ${{ secrets.GCP_APP_ENGINE_SERVICE_ACCOUNT }}
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_APP_ENGINE_SERVICE_ACCOUNT }}
 
-      
-name: Deploy to Google App Engine
-      run: |
-        gcloud app deploy app.yaml
-      env:
-        PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      - name: Deploy to Google App Engine
+        run: |
+          gcloud app deploy app.yaml
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
