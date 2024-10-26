@@ -222,10 +222,10 @@ This controller handles user-related operations including viewing, editing, and 
 - **Access Control**: Access to each endpoint is controlled by role-based permissions.
 - **Role Management**: Only Admins have permissions to change roles of other users.
 - Attached are some screenshots to show deployed database and progress of backend deployment.
-- ![app engine services](images/app engine services.png)
+- ![app engine services](images/app_engine_services.png)
 - ![config](images/config.png)
 - ![database](images/database.png)
-- ![logs from google app engine](images/logs from google app engine.png)
+- ![logs from google app engine](images/logs_from_google_app_engine.png)
 - ![secrets](images/secrets.png)
 --- 
 
