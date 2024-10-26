@@ -17,7 +17,9 @@ This project is a simple web/mobile application using a **Flutter frontend** and
 - [Database Configuration](#database-configuration)
 - [Environment Variables](#environment-variables)
 - [Deployment to Google Cloud](#deployment-to-google-cloud)
-- [Contributing](#contributing)
+- [Functionalities Overview](#functionalities-overview)
+- [API Endpoints](#api-endpoints)
+- [Workflow](#workflow)
 - [License](#license)
 
 ---
