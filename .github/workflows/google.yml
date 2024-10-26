@@ -56,8 +56,6 @@ jobs:
 
       - name: Build the app
         run: npm run build
-      - name: List output files
-        run: ls -la dist
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v0
