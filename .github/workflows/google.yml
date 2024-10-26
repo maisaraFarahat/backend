@@ -62,8 +62,20 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_APP_ENGINE_SERVICE_ACCOUNT }}
 
+      # New step to replace environment variables in app.yaml
+      - name: Replace environment variables in app.yaml
+        run: |
+          chmod +x ./replace_env_variables.sh
+          ./replace_env_variables.sh
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SENDGRID_VERIFIED_SENDER: ${{ secrets.SENDGRID_VERIFIED_SENDER }}
+          ENCRYPTION_ROUNDS: ${{ secrets.ENCRYPTION_ROUNDS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
       - name: Deploy to Google App Engine
-        run: chmod +x replace_env_variables.sh && ./replace_env_variables.sh &&
+        run: |
           gcloud app deploy app.yaml
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
