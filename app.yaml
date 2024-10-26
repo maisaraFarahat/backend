@@ -1,3 +1,12 @@
 runtime: nodejs20
 
-service: default
+service: backend-service
+
+entrypoint: npm run start
+
+env_variables:
+  DATABASE_URL: {{DATABASE_URL}}
+  SENDGRID_API_KEY: {{SENDGRID_API_KEY}}
+  SENDGRID_VERIFIED_SENDER: {{SENDGRID_VERIFIED_SENDER}}
+  ENCRYPTION_ROUNDS: {{ENCRYPTION_ROUNDS}}
+  JWT_SECRET: {{JWT_SECRET}}
